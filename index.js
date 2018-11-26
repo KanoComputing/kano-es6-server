@@ -5,7 +5,7 @@ const namedResolutionMiddleware = require('./named-resolution-middleware');
 
 module.exports = ({ root = process.cwd(), port = 4000 } = {}) => {
     return connect()
-        .use(namedResolutionMiddleware())
+        .use(namedResolutionMiddleware({ root }))
         .use(serveStatic(root))
         .listen(port);
 }
