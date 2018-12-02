@@ -1,13 +1,13 @@
 {
   "name": "@kano/es6-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "license": "MIT",
   "bin": {
     "es6-server": "./bin/es6-server.js"
   },
   "dependencies": {
-    "@kano/es6-resolution": "^1.0.10",
+    "@kano/es6-resolution": "^1.0.12",
     "colors": "^1.3.2",
     "connect": "^3.6.6",
     "mime": "^2.3.1",

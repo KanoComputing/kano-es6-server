@@ -41,7 +41,7 @@ module.exports = (opts = {}) => {
         }
 
         function transformAndSend() {
-            upgradedBody = resolve(root, buffer, contentType, filePath, reqUrl.path, onModule);
+            upgradedBody = resolve(root, buffer, contentType, filePath, req.originalUrl, onModule);
             queue = textChunk.text(upgradedBody, 1024);
             res.setHeader('Content-Length', Buffer.byteLength(upgradedBody, 'utf-8'));
             if (status) {
