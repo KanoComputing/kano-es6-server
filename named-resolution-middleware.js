@@ -1,6 +1,6 @@
 const url = require('url');
 const path = require('path');
-const resolve = require('@kano/es6-resolution');
+const { resolveNamedPath } = require('@kano/es6-resolution');
 const { StringDecoder } = require('string_decoder');
 const mime = require('mime');
 const textChunk = require('node-text-chunk');
@@ -41,7 +41,7 @@ module.exports = (opts = {}) => {
         }
 
         function transformAndSend() {
-            upgradedBody = resolve(root, buffer, contentType, filePath, req.originalUrl, onModule);
+            upgradedBody = resolveNamedPath(root, buffer, contentType, filePath, req.originalUrl, onModule);
             queue = textChunk.text(upgradedBody, 1024);
             res.setHeader('Content-Length', Buffer.byteLength(upgradedBody, 'utf-8'));
             if (status) {

@@ -1,23 +1,25 @@
 #!/usr/bin/env node
-require('colors');
-const yargs = require('yargs');
+const chalk = require('chalk');
+const sywac = require('sywac');
 const path = require('path');
 const serve = require('../index.js');
 
-const { argv } = yargs;
+sywac.positional('[root=./]', { paramsDesc: 'A directory to serve the files from', coerce: (p) => path.resolve(p) })
+    .number('-p, --port <number>', { desc: 'Which port to listen to', defaultValue: 4000 })
+    .help('-h, --help')
+    .version('-v, --version')
+    .parseAndExit()
+    .then((argv) => {
+        const { port, root } = argv;
 
-const [root] = argv._;
+        const server = serve({ root, port });
 
-const { port } = argv;
+        server.on('listening', () => {
+            const serverPort = server.address().port;
+            console.log(`Serving ${chalk.blue(root)} at ${chalk.green(`http://localhost:${serverPort}`)}`);
+        });
+        server.on('error', (e) => {
+            console.error(e.stack);
+        });
+    });
 
-const resolvedPath = path.resolve(root || process.cwd());
-
-const server = serve({
-    root: resolvedPath,
-    port: typeof port === 'undefined' ? 4000 : port,
-});
-
-
-const serverPort = server.address().port;
-
-console.log(`Serving ${resolvedPath.blue} at ${`http://localhost:${serverPort}`.green}`);
