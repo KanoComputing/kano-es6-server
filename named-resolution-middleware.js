@@ -7,7 +7,7 @@ const textChunk = require('node-text-chunk');
 
 module.exports = (opts = {}) => {
     const root = opts.root || process.cwd();
-    const onModule = opts.onModule || function () {};
+    const replacements = opts.replacements || [];
 
     return (req, res, next) => {
         const _end = res.end;
@@ -41,7 +41,7 @@ module.exports = (opts = {}) => {
         }
 
         function transformAndSend() {
-            upgradedBody = resolveNamedPath(root, buffer, contentType, filePath, req.originalUrl, onModule);
+            upgradedBody = resolveNamedPath(root, buffer, contentType, filePath, replacements);
             queue = textChunk.text(upgradedBody, 1024);
             res.setHeader('Content-Length', Buffer.byteLength(upgradedBody, 'utf-8'));
             if (status) {
